@@ -8,17 +8,21 @@ import numpy as np
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def recong(path):
-	grr = cv2.imread(str(path))
-	model1 = pr.LPR("model/cascade.xml","model/model12.h5","model/ocr_plate_all_gru.h5")
+#path = "images_rec/1.jpg"
+model1 = 0
 
-	for pstr,confidence,rect in model1.SimpleRecognizePlateByE2E(grr):
-		if confidence>0.7:
-		    
+
+def recong(path):
+	global model1
+	grr = cv2.imread(str(path))
+	if (model1 is 0):
+		model1 = pr.LPR("model/cascade.xml","model/model12.h5","model/ocr_plate_all_gru.h5")
+	result = model1.SimpleRecognizePlateByE2E(grr)
+	#print result
+	best_result = result[0][0]
+	for pstr,confidence,rect in result:
+		if confidence>0.7:	    
 		    print("plate_str",pstr[-6:])
 		    print("plate_confidence",confidence)
-
-
-
-	cv2.waitKey(0)
-	return pstr
+		    #cv2.waitKey(0)
+	return best_result

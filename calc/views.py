@@ -8,9 +8,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-import test
+from test import recong
 
 from forms import CureDataImageForm
+
 # Create your views here.
 
 def add(request):
@@ -30,14 +31,15 @@ def add(request):
 			#path1 = default_storage.save(path,ContentFile(image1))
 			#print(path1)
 			#print(request)
-			return HttpResponse(test.recong(path))
+			return HttpResponse(recong(path))
 		else: return HttpResponse("form error")
 	else:
 		return HttpResponse("request error")
 
-def add2(request, a, b):
-    c = int(a) + int(b)
-    return HttpResponse(str(c))
+def add2(request):
+    path = "images_rec/2.jpg"
+    str = recong(path)
+    return HttpResponse(str)
 
 def index(request):
 	return render(request, 'home.html')
